@@ -260,6 +260,7 @@ input::placeholder { color: #555; }
 ::-webkit-scrollbar-thumb { background: rgba(155, 89, 182, 0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(155, 89, 182, 0.5); }
 </style>
+<base target="_blank">
 </head>
 <body>
 <div class="container">
@@ -320,6 +321,20 @@ input::placeholder { color: #555; }
       <div class="stat-card"><h3 id="statSelected">0</h3><p>Selected</p></div>
       <div class="stat-card"><h3 id="statEngine">⚫</h3><p>Engine Status</p></div>
       <div class="stat-card"><h3 id="statSID">✓</h3><p>System ID</p></div>
+    </div>
+    <div class="card" id="systemInfoCard" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:1rem; color:#c084fc; text-transform:uppercase; letter-spacing:2px;">System Info</h3>
+        <span class="badge badge-blue" id="sysInfoBadge">Live</span>
+      </div>
+      <div id="systemInfoGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem; color:#aaa;">
+        <div><span style="color:#9b59b6;">CPU:</span> <span id="sysCpu">--</span></div>
+        <div><span style="color:#9b59b6;">GPU:</span> <span id="sysGpu">--</span></div>
+        <div><span style="color:#9b59b6;">RAM:</span> <span id="sysRam">--</span></div>
+        <div><span style="color:#9b59b6;">OS:</span> <span id="sysOs">--</span></div>
+        <div><span style="color:#9b59b6;">HWID:</span> <span id="sysHwid">--</span></div>
+        <div><span style="color:#9b59b6;">User:</span> <span id="sysUser">--</span></div>
+      </div>
     </div>
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
@@ -412,30 +427,37 @@ async function checkEngine() {
   const progress = document.getElementById('engineProgress');
   const btn = document.getElementById('btnRetry');
   btn.disabled = true;
-  text.textContent = 'Scanning for engine...';
-  progress.style.width = '30%';
+  text.textContent = 'Scanning for engine on localhost + 127.0.0.1...';
+  progress.style.width = '20%';
+
+  // Try both localhost and 127.0.0.1 for each port
   for (const port of API_PORTS) {
-    try {
-      const res = await fetch(`http://localhost:${port}/api/health`, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-      if (res.ok) {
-        const data = await res.json();
-        currentPort = port;
-        engineOnline = true;
-        badge.textContent = 'Online';
-        badge.className = 'badge badge-green';
-        box.classList.add('online');
-        text.textContent = `Engine on port ${port} — ${data.engine} v${data.version}`;
-        progress.style.width = '100%';
-        btn.disabled = false;
-        if (sidKey) { await validateViaEngine(sidKey); }
-        setTimeout(() => { loadModules(); showScreen('screen-dashboard'); }, 800);
-        return;
-      }
-    } catch (e) {}
+    for (const host of ['localhost', '127.0.0.1']) {
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 2000);
+        const res = await fetch(`http://${host}:${port}/api/health`, { method: 'GET', mode: 'cors', cache: 'no-cache', signal: controller.signal });
+        clearTimeout(timeout);
+        if (res.ok) {
+          const data = await res.json();
+          currentPort = port;
+          engineOnline = true;
+          badge.textContent = 'Online';
+          badge.className = 'badge badge-green';
+          box.classList.add('online');
+          text.textContent = `Engine on ${host}:${port} — ${data.engine} v${data.version}`;
+          progress.style.width = '100%';
+          btn.disabled = false;
+          if (sidKey) { await validateViaEngine(sidKey); }
+          setTimeout(() => { loadModules(); loadSystemInfo(); showScreen('screen-dashboard'); }, 800);
+          return;
+        }
+      } catch (e) {}
+    }
   }
   badge.textContent = 'Offline';
   badge.className = 'badge badge-red';
-  text.textContent = 'Engine not found. Run start.bat as Administrator.';
+  text.textContent = 'Engine not found. Run start.bat as Administrator. Ports checked: 9000-9010 on localhost + 127.0.0.1';
   progress.style.width = '0%';
   btn.disabled = false;
 }
@@ -452,10 +474,28 @@ async function validateViaEngine(sid) {
   } catch (e) { log('Validation error: ' + e.message, 'error'); }
 }
 
+async function loadSystemInfo() {
+  if (!currentPort) return;
+  try {
+    const res = await fetch(`http://localhost:${currentPort}/api/systeminfo`, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('sysCpu').textContent = data.cpu || 'Unknown';
+      document.getElementById('sysGpu').textContent = data.gpu || 'Unknown';
+      document.getElementById('sysRam').textContent = (data.memory_gb ? data.memory_gb + ' GB' : 'Unknown');
+      document.getElementById('sysOs').textContent = data.os || 'Unknown';
+      document.getElementById('sysHwid').textContent = data.hwid ? data.hwid.substring(0, 16) + '...' : 'Unknown';
+      document.getElementById('sysUser').textContent = (data.user || 'Unknown') + '@' + (data.computer || 'Unknown');
+      document.getElementById('systemInfoCard').style.display = 'block';
+      log('System info loaded', 'info');
+    }
+  } catch (e) { log('Failed to load system info', 'error'); }
+}
+
 async function loadModules() {
   if (!currentPort) return;
   try {
-    const res = await fetch(`http://localhost:${currentPort}/api/modules`);
+    const res = await fetch(`http://localhost:${currentPort}/api/modules`, { method: 'GET', mode: 'cors', cache: 'no-cache' });
     const data = await res.json();
     modules = data.modules || [];
     renderModules();
