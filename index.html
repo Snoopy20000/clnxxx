@@ -259,6 +259,23 @@ input::placeholder { color: #555; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(155, 89, 182, 0.3); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(155, 89, 182, 0.5); }
+#screen-banned { animation: shake 0.5s ease-in-out; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+#screen-banned .card:hover { border-color: rgba(231, 76, 60, 0.6); box-shadow: 0 0 30px rgba(231, 76, 60, 0.2); }
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+#screen-banned h1 { animation: glitch 2s infinite; }
+@keyframes glitch {
+  0%, 100% { text-shadow: 0 0 20px rgba(231,76,60,0.5); }
+  50% { text-shadow: 2px 0 #c0392b, -2px 0 #e74c3c; }
+}
 </style>
 <base target="_blank">
 </head>
@@ -345,6 +362,37 @@ input::placeholder { color: #555; }
     </div>
   </div>
 
+
+  <!-- SCREEN: BANNED -->
+  <div id="screen-banned" class="screen">
+    <div style="text-align:center; padding:60px 20px;">
+      <div style="font-size:6rem; margin-bottom:20px; animation: pulse 1s infinite;">🚫</div>
+      <h1 style="font-size:3.5rem; font-weight:800; color:#e74c3c; text-transform:uppercase; letter-spacing:8px; margin-bottom:16px; text-shadow: 0 0 20px rgba(231,76,60,0.5);">BANNED</h1>
+      <p style="font-size:1.3rem; color:#c0392b; margin-bottom:20px; font-weight:600;">Your hardware fingerprint has been permanently blacklisted.</p>
+      <p style="font-size:0.9rem; color:#888; margin-bottom:40px; font-family:monospace;" id="bannedHwid">HWID: Loading...</p>
+
+      <div class="card" style="max-width:500px; margin:0 auto 30px; border-color:rgba(231,76,60,0.5); background:rgba(231,76,60,0.08); box-shadow: 0 0 40px rgba(231,76,60,0.15);">
+        <div style="font-size:0.9rem; color:#e74c3c; line-height:2; text-align:left; padding:0 10px;">
+          <p>🔴 <strong>Violation:</strong> Chargeback fraud / unauthorized distribution</p>
+          <p>🔴 <strong>HWID Status:</strong> BANNED permanently across all licenses</p>
+          <p>🔴 <strong>Associated SIDs:</strong> All linked keys revoked</p>
+          <p>🔴 <strong>Appeal Process:</strong> Submit proof of legitimate purchase</p>
+          <p style="margin-top:12px; font-size:0.8rem; color:#999; border-top:1px solid rgba(231,76,60,0.2); padding-top:10px;">
+            Your hardware signature has been logged. Attempting to spoof, modify, or bypass this restriction will result in immediate legal action under the Computer Fraud and Abuse Act (18 U.S.C. § 1030).
+          </p>
+        </div>
+      </div>
+
+      <div style="font-size:0.85rem; color:#666; margin-bottom:30px;">
+        <p>This ban is <strong>irreversible</strong> without verified payment proof.</p>
+        <p>All associated Discord accounts and IP addresses flagged.</p>
+      </div>
+
+      <button class="btn btn-danger" style="font-size:1rem; padding:16px 40px; margin-right:10px;" onclick="location.reload()">Acknowledge Ban</button>
+      <button class="btn btn-secondary" style="font-size:0.85rem; padding:12px 24px;" onclick="alert('Appeal requests must include: Transaction ID, Screenshot of payment, Discord username, and a written statement. Send to admin via Discord DM.')">Appeal Ban</button>
+    </div>
+  </div>
+
   <div class="footer">
     xXx Cleaner Ultimate v3.0 — NAPSE Aware — HWID Local Binding — Stealth SID System
   </div>
@@ -361,6 +409,13 @@ let selectedModules = new Set();
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if (id === 'screen-banned') {
+    // Try to populate HWID from system info if available
+    const hwidEl = document.getElementById('bannedHwid');
+    if (hwidEl && document.getElementById('sysHwid').textContent !== '--') {
+      hwidEl.textContent = 'HWID: ' + document.getElementById('sysHwid').textContent;
+    }
+  }
 }
 
 function showStatus(msg, type) {
@@ -373,34 +428,74 @@ async function validateSID() {
   const rawKey = document.getElementById('sidInput').value.trim();
   const btn = document.getElementById('btnValidate');
   if (!rawKey) { showStatus('Enter a System ID', 'invalid'); return; }
-  // Case-insensitive format check: xXx or XXX or xxx prefix all valid
   const format = /^[xX]{3}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/;
   if (!format.test(rawKey)) { showStatus('Invalid format. Use: xXx-XXXX-XXXX-XXXX-XXXX', 'invalid'); return; }
   const key = rawKey.toUpperCase();
-  btn.disabled = true;
-  showStatus('Format valid. Checking...', 'pending');
-  sidKey = key;
   localStorage.setItem('xXxSID', key);
   document.getElementById('cmdText').textContent = `powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -SID "${key}"`;
-  showStatus('Format valid. Checking engine...', 'pending');
+  showStatus('Format valid. Checking license...', 'pending');
+  btn.disabled = true;
 
-  // Try engine first
-  try {
-    const res = await tryValidateViaEngine(key);
-    if (res && res.valid) {
-      showStatus('System ID validated ✓ Engine online!', 'valid');
-      setTimeout(() => showScreen('screen-dashboard'), 1000);
-      return;
-    } else if (res && res.reason) {
-      showStatus('Validation failed: ' + res.reason, 'invalid');
-      return;
-    }
-  } catch(e) {
-    console.log('Engine validation attempt failed:', e);
+  if (!currentPort) {
+    await checkEngine();
   }
 
-  showStatus('Format valid. Start engine to complete activation.', 'valid');
-  setTimeout(() => showScreen('screen-engine'), 1500);
+  if (!currentPort) {
+    showStatus('Engine not running. Start the engine first.', 'invalid');
+    btn.disabled = false;
+    setTimeout(() => showScreen('screen-engine'), 1500);
+    return;
+  }
+
+  try {
+    const res = await tryValidateViaEngine(key);
+    btn.disabled = false;
+
+    if (!res) {
+      showStatus('Engine error. Try again.', 'invalid');
+      return;
+    }
+
+    if (res.status === 'valid_new' || res.status === 'valid_bound') {
+      showStatus('✓ License valid. Launching...', 'valid');
+      sidKey = key;
+      setTimeout(() => { loadModules(); loadSystemInfo(); showScreen('screen-dashboard'); }, 1000);
+      return;
+    }
+
+    if (res.status === 'banned') {
+      showScreen('screen-banned');
+      return;
+    }
+
+    if (res.status === 'invalid') {
+      if (res.error_type && res.error_type.includes('mismatch')) {
+        showStatus('✗ HWID MISMATCH: License linked to different PC', 'invalid');
+      } else if (res.error_type && res.error_type.includes('revoked')) {
+        showStatus('✗ REVOKED: License has been revoked', 'invalid');
+      } else {
+        showStatus('✗ INVALID: License not found in database', 'invalid');
+      }
+      return;
+    }
+
+    if (res.status === 'offline') {
+      showStatus('✗ Bot API offline. First activation needs internet.', 'invalid');
+      return;
+    }
+
+    if (res.valid) {
+      showStatus('✓ License valid. Launching...', 'valid');
+      sidKey = key;
+      setTimeout(() => { loadModules(); loadSystemInfo(); showScreen('screen-dashboard'); }, 1000);
+    } else {
+      showStatus('✗ ' + (res.reason || 'Validation failed'), 'invalid');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    console.log('Validation error:', e);
+    showStatus('Connection error. Try again.', 'invalid');
+  }
 }
 
 async function tryValidateViaEngine(sid) {
@@ -410,8 +505,12 @@ async function tryValidateViaEngine(sid) {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sid: sid })
     });
+    if (!res.ok) return { valid: false, reason: 'Engine error ' + res.status, status: 'error' };
     return await res.json();
-  } catch { return null; }
+  } catch(e) { 
+    console.log('Engine validation fetch failed:', e);
+    return null; 
+  }
 }
 
 async function checkEngine() {
@@ -457,7 +556,19 @@ async function validateViaEngine(sid) {
       body: JSON.stringify({ sid: sid })
     });
     const data = await res.json();
-    log(data.valid ? 'System ID activated on engine' : `System ID failed: ${data.reason}`, data.valid ? 'success' : 'error');
+    if (data.status === 'valid_new') {
+      log('License activated & HWID linked ✓', 'success');
+    } else if (data.status === 'valid_bound') {
+      log('License valid (already bound) ✓', 'success');
+    } else if (data.status === 'banned') {
+      log('HWID BANNED: ' + data.reason, 'error');
+    } else if (data.status === 'invalid') {
+      log('Invalid license: ' + data.reason, 'error');
+    } else if (data.status === 'offline') {
+      log('Bot API offline - first activation needs internet', 'error');
+    } else {
+      log(data.valid ? 'License valid ✓' : `License failed: ${data.reason}`, data.valid ? 'success' : 'error');
+    }
   } catch (e) { log('Validation error: ' + e.message, 'error'); }
 }
 
