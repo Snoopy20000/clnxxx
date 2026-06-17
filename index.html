@@ -319,7 +319,7 @@ input::placeholder { color: #555; }
     <div class="stats-grid">
       <div class="stat-card"><h3 id="statModules">55</h3><p>Total Modules</p></div>
       <div class="stat-card"><h3 id="statSelected">0</h3><p>Selected</p></div>
-      <div class="stat-card"><h3 id="statPC">--</h3><p>PC Info</p></div>
+      <div class="stat-card"><h3 id="statEngine">⚫</h3><p>Engine Status</p></div>
       <div class="stat-card"><h3 id="statSID">✓</h3><p>System ID</p></div>
     </div>
     <div class="card">
@@ -370,16 +370,19 @@ function showStatus(msg, type) {
 }
 
 async function validateSID() {
-  const key = document.getElementById('sidInput').value.trim().toUpperCase();
+  const rawKey = document.getElementById('sidInput').value.trim();
   const btn = document.getElementById('btnValidate');
-  if (!key) { showStatus('Enter a System ID', 'invalid'); return; }
-  const format = /^xXx-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-  if (!format.test(key)) { showStatus('Invalid format. Use: xXx-XXXX-XXXX-XXXX-XXXX', 'invalid'); return; }
+  if (!rawKey) { showStatus('Enter a System ID', 'invalid'); return; }
+  // Case-insensitive format check: xXx or XXX or xxx prefix all valid
+  const format = /^[xX]{3}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}$/;
+  if (!format.test(rawKey)) { showStatus('Invalid format. Use: xXx-XXXX-XXXX-XXXX-XXXX', 'invalid'); return; }
+  const key = rawKey.toUpperCase();
   btn.disabled = true;
   showStatus('Format valid. Checking...', 'pending');
   sidKey = key;
   localStorage.setItem('xXxSID', key);
   document.getElementById('cmdText').textContent = `powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -SID "${key}"`;
+  showStatus('Format valid. Checking engine...', 'pending');
 
   // Try engine first
   try {
@@ -388,8 +391,13 @@ async function validateSID() {
       showStatus('System ID validated ✓ Engine online!', 'valid');
       setTimeout(() => showScreen('screen-dashboard'), 1000);
       return;
+    } else if (res && res.reason) {
+      showStatus('Validation failed: ' + res.reason, 'invalid');
+      return;
     }
-  } catch(e) {}
+  } catch(e) {
+    console.log('Engine validation attempt failed:', e);
+  }
 
   showStatus('Format valid. Start engine to complete activation.', 'valid');
   setTimeout(() => showScreen('screen-engine'), 1500);
@@ -412,65 +420,33 @@ async function checkEngine() {
   const text = document.getElementById('engineText');
   const progress = document.getElementById('engineProgress');
   const btn = document.getElementById('btnRetry');
-  const statPC = document.getElementById('statPC');
-
   btn.disabled = true;
   text.textContent = 'Scanning for engine...';
-  progress.style.width = '10%';
-
-  let found = false;
-  let attempts = 0;
-  const maxAttempts = 3;
-
-  while (!found && attempts < maxAttempts) {
-    attempts++;
-    text.textContent = `Scanning attempt ${attempts}/${maxAttempts}...`;
-    progress.style.width = `${attempts * 30}%`;
-
-    for (const port of API_PORTS) {
-      for (const host of ['127.0.0.1', 'localhost']) {
-        try {
-          const url = `http://${host}:${port}/api/health`;
-          const res = await fetch(url, { method: 'GET', mode: 'cors', cache: 'no-cache' });
-          if (res.ok) {
-            const data = await res.json();
-            currentPort = port;
-            engineOnline = true;
-            found = true;
-
-            badge.textContent = 'Online';
-            badge.className = 'badge badge-green';
-            box.classList.add('online');
-            text.textContent = `Connected to ${host}:${port} — ${data.engine} v${data.version}`;
-            progress.style.width = '100%';
-            btn.disabled = false;
-
-            if (sidKey) { await validateViaEngine(sidKey); }
-
-            // Load everything then show dashboard
-            await loadSystemInfo();
-            await loadModules();
-            showScreen('screen-dashboard');
-            return;
-          }
-        } catch (e) {
-          // Silent fail, try next
-        }
+  progress.style.width = '30%';
+  for (const port of API_PORTS) {
+    try {
+      const res = await fetch(`http://localhost:${port}/api/health`, { method: 'GET', mode: 'cors', cache: 'no-cache' });
+      if (res.ok) {
+        const data = await res.json();
+        currentPort = port;
+        engineOnline = true;
+        badge.textContent = 'Online';
+        badge.className = 'badge badge-green';
+        box.classList.add('online');
+        text.textContent = `Engine on port ${port} — ${data.engine} v${data.version}`;
+        progress.style.width = '100%';
+        btn.disabled = false;
+        if (sidKey) { await validateViaEngine(sidKey); }
+        setTimeout(() => { loadModules(); showScreen('screen-dashboard'); }, 800);
+        return;
       }
-    }
-
-    if (!found && attempts < maxAttempts) {
-      text.textContent = `No engine found. Retrying in 2s... (attempt ${attempts}/${maxAttempts})`;
-      await new Promise(r => setTimeout(r, 2000));
-    }
+    } catch (e) {}
   }
-
   badge.textContent = 'Offline';
   badge.className = 'badge badge-red';
-  text.textContent = 'Engine not found. Run start.bat as Administrator. Checked ports 9000-9010.';
+  text.textContent = 'Engine not found. Run start.bat as Administrator.';
   progress.style.width = '0%';
   btn.disabled = false;
-  statPC.textContent = '⚫';
 }
 
 async function validateViaEngine(sid) {
@@ -592,11 +568,8 @@ window.onload = () => {
     if (engineOnline) loadModules();
   });
   setInterval(() => {
-    if (!engineOnline && document.getElementById('screen-engine').classList.contains('active')) {
-      log('Auto-retrying engine connection...', 'info');
-      checkEngine();
-    }
-  }, 8000);
+    if (!engineOnline && document.getElementById('screen-engine').classList.contains('active')) checkEngine();
+  }, 5000);
 };
 </script>
 </body>
