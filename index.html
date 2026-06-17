@@ -14,8 +14,6 @@ body {
   overflow-x: hidden;
 }
 .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-
-/* Header */
 .header { text-align: center; margin-bottom: 40px; }
 .header h1 {
   font-size: 2.5rem;
@@ -28,13 +26,9 @@ body {
   margin-bottom: 8px;
 }
 .header p { color: #888; font-size: 0.9rem; letter-spacing: 1px; }
-
-/* Screens */
 .screen { display: none; animation: fadeIn 0.5s ease; }
 .screen.active { display: block; }
 @keyframes fadeIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-
-/* Cards */
 .card {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(155, 89, 182, 0.2);
@@ -45,8 +39,6 @@ body {
   transition: all 0.3s ease;
 }
 .card:hover { border-color: rgba(155, 89, 182, 0.4); }
-
-/* Inputs */
 .input-group { margin-bottom: 24px; }
 .input-group label {
   display: block;
@@ -74,8 +66,6 @@ input:focus {
   box-shadow: 0 0 20px rgba(155, 89, 182, 0.2);
 }
 input::placeholder { color: #555; }
-
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -115,8 +105,6 @@ input::placeholder { color: #555; }
   color: white;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Status badges */
 .badge {
   display: inline-block;
   padding: 4px 12px;
@@ -129,22 +117,19 @@ input::placeholder { color: #555; }
 .badge-green { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
 .badge-red { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
 .badge-purple { background: rgba(155, 89, 182, 0.15); color: #9b59b6; border: 1px solid rgba(155, 89, 182, 0.3); }
-
-/* License Screen */
-.license-form { max-width: 500px; margin: 0 auto; }
-.license-status {
+.badge-blue { background: rgba(52, 152, 219, 0.15); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
+.sid-form { max-width: 500px; margin: 0 auto; }
+.sid-status {
   margin-top: 16px;
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 0.9rem;
   display: none;
 }
-.license-status.show { display: block; }
-.license-status.valid { background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); color: #2ecc71; }
-.license-status.invalid { background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); color: #e74c3c; }
-.license-status.pending { background: rgba(155, 89, 182, 0.1); border: 1px solid rgba(155, 89, 182, 0.3); color: #c084fc; }
-
-/* Engine Screen */
+.sid-status.show { display: block; }
+.sid-status.valid { background: rgba(46, 204, 113, 0.1); border: 1px solid rgba(46, 204, 113, 0.3); color: #2ecc71; }
+.sid-status.invalid { background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); color: #e74c3c; }
+.sid-status.pending { background: rgba(155, 89, 182, 0.1); border: 1px solid rgba(155, 89, 182, 0.3); color: #c084fc; }
 .engine-box {
   background: rgba(0,0,0,0.3);
   border-radius: 12px;
@@ -178,8 +163,6 @@ input::placeholder { color: #555; }
   cursor: pointer;
 }
 .command-box .copy-btn:hover { background: rgba(155, 89, 182, 0.4); }
-
-/* Dashboard */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -195,8 +178,6 @@ input::placeholder { color: #555; }
 }
 .stat-card h3 { font-size: 2rem; color: #9b59b6; margin-bottom: 4px; }
 .stat-card p { color: #888; font-size: 0.85rem; }
-
-/* Modules */
 .modules-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -236,8 +217,6 @@ input::placeholder { color: #555; }
   background: rgba(155, 89, 182, 0.15);
   color: #c084fc;
 }
-
-/* Progress */
 .progress-bar {
   width: 100%;
   height: 6px;
@@ -253,8 +232,6 @@ input::placeholder { color: #555; }
   transition: width 0.3s ease;
   width: 0%;
 }
-
-/* Logs */
 .log-box {
   background: #0a0a0a;
   border: 1px solid rgba(255,255,255,0.05);
@@ -271,18 +248,13 @@ input::placeholder { color: #555; }
 .log-box .log-success { color: #2ecc71; }
 .log-box .log-error { color: #e74c3c; }
 .log-box .log-info { color: #c084fc; }
-
-/* Divider */
+.log-box .log-local { color: #3498db; }
 .divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(155, 89, 182, 0.3), transparent);
   margin: 24px 0;
 }
-
-/* Footer */
 .footer { text-align: center; margin-top: 40px; color: #555; font-size: 0.8rem; }
-
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(155, 89, 182, 0.3); border-radius: 3px; }
@@ -293,21 +265,25 @@ input::placeholder { color: #555; }
 <div class="container">
   <div class="header">
     <h1>xXx CLEANER</h1>
-    <p>ULTIMATE EDITION — NAPSE AWARE — OCEAN CHECK BYPASS</p>
+    <p>ULTIMATE EDITION v3.0 — NAPSE AWARE — LOCAL BINDING</p>
   </div>
 
-  <!-- SCREEN 1: LICENSE -->
-  <div id="screen-license" class="screen active">
-    <div class="card license-form">
-      <h2 style="text-align:center; margin-bottom:24px; color:#c084fc; font-weight:300; letter-spacing:3px;">LICENSE VALIDATION</h2>
+  <!-- SCREEN 1: SYSTEM ID -->
+  <div id="screen-sid" class="screen active">
+    <div class="card sid-form">
+      <h2 style="text-align:center; margin-bottom:24px; color:#c084fc; font-weight:300; letter-spacing:3px;">SYSTEM ID VALIDATION</h2>
       <div class="input-group">
-        <label>Enter License Key</label>
-        <input type="text" id="licenseKey" placeholder="xXx-XXXX-XXXX-XXXX-XXXX" maxlength="24" autocomplete="off">
+        <label>Enter System ID</label>
+        <input type="text" id="sidInput" placeholder="xXx-XXXX-XXXX-XXXX-XXXX" maxlength="24" autocomplete="off">
       </div>
       <div style="text-align:center;">
-        <button class="btn btn-primary" id="btnValidate" onclick="validateLicense()">Validate Key</button>
+        <button class="btn btn-primary" id="btnValidate" onclick="validateSID()">Validate System ID</button>
       </div>
-      <div id="licenseStatus" class="license-status"></div>
+      <div id="sidStatus" class="sid-status"></div>
+      <div id="localBindingInfo" style="margin-top:16px; text-align:center; display:none;">
+        <span class="badge badge-blue">Local Binding Found</span>
+        <p style="color:#888; font-size:0.8rem; margin-top:8px;" id="localBindingText"></p>
+      </div>
     </div>
   </div>
 
@@ -315,8 +291,7 @@ input::placeholder { color: #555; }
   <div id="screen-engine" class="screen">
     <div class="card">
       <h2 style="text-align:center; margin-bottom:8px; color:#c084fc; font-weight:300; letter-spacing:3px;">ENGINE SETUP</h2>
-      <p style="text-align:center; color:#888; margin-bottom:24px;">License validated. Start the PowerShell engine to connect.</p>
-
+      <p style="text-align:center; color:#888; margin-bottom:24px;">System ID validated. Start the PowerShell engine to connect.</p>
       <div class="engine-box" id="engineBox">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
           <span style="font-weight:500;">Engine Status</span>
@@ -325,45 +300,12 @@ input::placeholder { color: #555; }
         <div class="progress-bar"><div class="fill" id="engineProgress" style="width:0%"></div></div>
         <p id="engineText" style="color:#888; font-size:0.85rem;">Waiting for engine to come online...</p>
       </div>
-
       <div class="divider"></div>
-
       <h3 style="font-size:0.9rem; color:#9b59b6; margin-bottom:12px; text-transform:uppercase; letter-spacing:2px;">Run Command</h3>
       <div class="command-box" id="cmdBox">
-        <span id="cmdText">powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1</span>
+        <span id="cmdText">powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -SID "xXx-XXXX-XXXX-XXXX-XXXX"</span>
         <button class="copy-btn" onclick="copyCommand()">Copy</button>
       </div>
-
-      <div style="text-align:center; margin-top:20px;">
-        <button class="btn btn-secondary" id="btnRetry" onclick="checkEngine()">Retry Connection</button>
-        <button class="btn btn-primary" style="margin-left:10px;" onclick="downloadPS1()">Download .ps1</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCREEN 3: DASHBOARD -->
-  <div id="screen-engine" class="screen">
-    <div class="card">
-      <h2 style="text-align:center; margin-bottom:8px; color:#c084fc; font-weight:300; letter-spacing:3px;">ENGINE SETUP</h2>
-      <p style="text-align:center; color:#888; margin-bottom:24px;">License validated. Start the PowerShell engine to connect.</p>
-
-      <div class="engine-box" id="engineBox">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-          <span style="font-weight:500;">Engine Status</span>
-          <span id="engineBadge" class="badge badge-red">Offline</span>
-        </div>
-        <div class="progress-bar"><div class="fill" id="engineProgress" style="width:0%"></div></div>
-        <p id="engineText" style="color:#888; font-size:0.85rem;">Waiting for engine to come online...</p>
-      </div>
-
-      <div class="divider"></div>
-
-      <h3 style="font-size:0.9rem; color:#9b59b6; margin-bottom:12px; text-transform:uppercase; letter-spacing:2px;">Run Command</h3>
-      <div class="command-box" id="cmdBox">
-        <span id="cmdText">powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1</span>
-        <button class="copy-btn" onclick="copyCommand()">Copy</button>
-      </div>
-
       <div style="text-align:center; margin-top:20px;">
         <button class="btn btn-secondary" id="btnRetry" onclick="checkEngine()">Retry Connection</button>
         <button class="btn btn-primary" style="margin-left:10px;" onclick="downloadPS1()">Download .ps1</button>
@@ -374,24 +316,11 @@ input::placeholder { color: #555; }
   <!-- SCREEN 3: DASHBOARD -->
   <div id="screen-dashboard" class="screen">
     <div class="stats-grid">
-      <div class="stat-card">
-        <h3 id="statModules">55</h3>
-        <p>Total Modules</p>
-      </div>
-      <div class="stat-card">
-        <h3 id="statSelected">0</h3>
-        <p>Selected</p>
-      </div>
-      <div class="stat-card">
-        <h3 id="statEngine">🟢</h3>
-        <p>Engine Status</p>
-      </div>
-      <div class="stat-card">
-        <h3 id="statLicense">✓</h3>
-        <p>License</p>
-      </div>
+      <div class="stat-card"><h3 id="statModules">55</h3><p>Total Modules</p></div>
+      <div class="stat-card"><h3 id="statSelected">0</h3><p>Selected</p></div>
+      <div class="stat-card"><h3 id="statEngine">⚫</h3><p>Engine Status</p></div>
+      <div class="stat-card"><h3 id="statSID">✓</h3><p>System ID</p></div>
     </div>
-
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
         <h3 style="font-size:1rem; color:#c084fc; text-transform:uppercase; letter-spacing:2px;">Cleaning Modules</h3>
@@ -407,7 +336,6 @@ input::placeholder { color: #555; }
         <button class="btn btn-danger" onclick="runCleanAll()">System Optimization</button>
       </div>
     </div>
-
     <div class="card">
       <h3 style="font-size:1rem; color:#c084fc; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Activity Log</h3>
       <div class="log-box" id="logBox">
@@ -417,114 +345,78 @@ input::placeholder { color: #555; }
   </div>
 
   <div class="footer">
-    xXx Cleaner Ultimate — NAPSE Aware — HWID License System
+    xXx Cleaner Ultimate v3.0 — NAPSE Aware — HWID Local Binding — Stealth SID System
   </div>
 </div>
 
 <script>
-// ============================================
-// CONFIG
-// ============================================
-const API_PORTS = [9000, 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010];
+const API_PORTS = [9000,9001,9002,9003,9004,9005,9006,9007,9008,9009,9010];
 let currentPort = null;
-let licenseKey = localStorage.getItem('xXxLicense') || '';
+let sidKey = localStorage.getItem('xXxSID') || '';
 let engineOnline = false;
 let modules = [];
 let selectedModules = new Set();
 
-// ============================================
-// SCREEN MANAGEMENT
-// ============================================
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// ============================================
-// LICENSE VALIDATION
-// ============================================
-function validateLicense() {
-  const key = document.getElementById('licenseKey').value.trim().toUpperCase();
-  const status = document.getElementById('licenseStatus');
-  const btn = document.getElementById('btnValidate');
-
-  if (!key) {
-    showStatus('Enter a license key', 'invalid');
-    return;
-  }
-
-  // Format check
-  const format = /^xXx-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
-  if (!format.test(key)) {
-    showStatus('Invalid format. Use: xXx-XXXX-XXXX-XXXX-XXXX', 'invalid');
-    return;
-  }
-
-  btn.disabled = true;
-  showStatus('Format valid. Checking license...', 'pending');
-
-  // Try to validate via engine (if already running) or just store and proceed
-  licenseKey = key;
-  localStorage.setItem('xXxLicense', key);
-
-  // Update command with key
-  document.getElementById('cmdText').textContent =
-    `powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -LicenseKey "${key}"`;
-
-  // Try engine first — if it's running, do real validation
-  tryValidateViaEngine(key).then(result => {
-    if (result && result.valid) {
-      showStatus('License validated ✓ — Engine already online!', 'valid');
-      setTimeout(() => showScreen('screen-dashboard'), 1000);
-    } else {
-      showStatus('Format valid. Start engine to complete activation.', 'valid');
-      setTimeout(() => showScreen('screen-engine'), 1500);
-    }
-  }).catch(() => {
-    showStatus('Format valid. Start engine to complete activation.', 'valid');
-    setTimeout(() => showScreen('screen-engine'), 1500);
-  });
-}
-
 function showStatus(msg, type) {
-  const el = document.getElementById('licenseStatus');
+  const el = document.getElementById('sidStatus');
   el.textContent = msg;
-  el.className = 'license-status show ' + type;
+  el.className = 'sid-status show ' + type;
 }
 
-async function tryValidateViaEngine(key) {
+async function validateSID() {
+  const key = document.getElementById('sidInput').value.trim().toUpperCase();
+  const btn = document.getElementById('btnValidate');
+  if (!key) { showStatus('Enter a System ID', 'invalid'); return; }
+  const format = /^xXx-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+  if (!format.test(key)) { showStatus('Invalid format. Use: xXx-XXXX-XXXX-XXXX-XXXX', 'invalid'); return; }
+  btn.disabled = true;
+  showStatus('Format valid. Checking...', 'pending');
+  sidKey = key;
+  localStorage.setItem('xXxSID', key);
+  document.getElementById('cmdText').textContent = `powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -SID "${key}"`;
+
+  // Try engine first
+  try {
+    const res = await tryValidateViaEngine(key);
+    if (res && res.valid) {
+      showStatus('System ID validated ✓ Engine online!', 'valid');
+      setTimeout(() => showScreen('screen-dashboard'), 1000);
+      return;
+    }
+  } catch(e) {}
+
+  showStatus('Format valid. Start engine to complete activation.', 'valid');
+  setTimeout(() => showScreen('screen-engine'), 1500);
+}
+
+async function tryValidateViaEngine(sid) {
   if (!currentPort) return null;
   try {
     const res = await fetch(`http://localhost:${currentPort}/api/validate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: key })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sid: sid })
     });
     return await res.json();
   } catch { return null; }
 }
 
-// ============================================
-// ENGINE DETECTION
-// ============================================
 async function checkEngine() {
   const badge = document.getElementById('engineBadge');
   const box = document.getElementById('engineBox');
   const text = document.getElementById('engineText');
   const progress = document.getElementById('engineProgress');
   const btn = document.getElementById('btnRetry');
-
   btn.disabled = true;
   text.textContent = 'Scanning for engine...';
   progress.style.width = '30%';
-
   for (const port of API_PORTS) {
     try {
-      const res = await fetch(`http://localhost:${port}/api/health`, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache'
-      });
+      const res = await fetch(`http://localhost:${port}/api/health`, { method: 'GET', mode: 'cors', cache: 'no-cache' });
       if (res.ok) {
         const data = await res.json();
         currentPort = port;
@@ -532,52 +424,34 @@ async function checkEngine() {
         badge.textContent = 'Online';
         badge.className = 'badge badge-green';
         box.classList.add('online');
-        text.textContent = `Engine detected on port ${port} — ${data.engine}`;
+        text.textContent = `Engine on port ${port} — ${data.engine} v${data.version}`;
         progress.style.width = '100%';
         btn.disabled = false;
-
-        // If we have a license key, validate it now
-        if (licenseKey) {
-          await validateViaEngine(licenseKey);
-        }
-
-        setTimeout(() => showScreen('screen-dashboard'), 800);
+        if (sidKey) { await validateViaEngine(sidKey); }
+        setTimeout(() => { loadModules(); showScreen('screen-dashboard'); }, 800);
         return;
       }
-    } catch (e) {
-      // Port not responding, try next
-    }
+    } catch (e) {}
   }
-
   badge.textContent = 'Offline';
   badge.className = 'badge badge-red';
-  text.textContent = 'Engine not found. Run the PowerShell script as Administrator.';
+  text.textContent = 'Engine not found. Run start.bat as Administrator.';
   progress.style.width = '0%';
   btn.disabled = false;
 }
 
-async function validateViaEngine(key) {
-  if (!currentPort || !key) return;
+async function validateViaEngine(sid) {
+  if (!currentPort || !sid) return;
   try {
     const res = await fetch(`http://localhost:${currentPort}/api/validate`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: key })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sid: sid })
     });
     const data = await res.json();
-    if (data.valid) {
-      log('License activated on engine', 'success');
-    } else {
-      log(`License failed: ${data.reason}`, 'error');
-    }
-  } catch (e) {
-    log('License validation error: ' + e.message, 'error');
-  }
+    log(data.valid ? 'System ID activated on engine' : `System ID failed: ${data.reason}`, data.valid ? 'success' : 'error');
+  } catch (e) { log('Validation error: ' + e.message, 'error'); }
 }
 
-// ============================================
-// MODULES
-// ============================================
 async function loadModules() {
   if (!currentPort) return;
   try {
@@ -585,73 +459,47 @@ async function loadModules() {
     const data = await res.json();
     modules = data.modules || [];
     renderModules();
-  } catch (e) {
-    log('Failed to load modules', 'error');
-  }
+  } catch (e) { log('Failed to load modules', 'error'); }
 }
 
 function renderModules() {
   const grid = document.getElementById('modulesGrid');
   grid.innerHTML = '';
   modules.forEach(mod => {
+    if (mod.id === 'clean_all') return;
     const div = document.createElement('div');
     div.className = 'module-item' + (selectedModules.has(mod.id) ? ' selected' : '');
     div.onclick = () => toggleModule(mod.id);
-    div.innerHTML = `
-      <input type="checkbox" ${selectedModules.has(mod.id) ? 'checked' : ''} onclick="event.stopPropagation(); toggleModule('${mod.id}')">
-      <div class="mod-info">
-        <div class="mod-name">${mod.name}</div>
-        <div class="mod-desc">${mod.description}</div>
-      </div>
-      <span class="mod-cat">${mod.category}</span>
-    `;
+    div.innerHTML = `<input type="checkbox" ${selectedModules.has(mod.id) ? 'checked' : ''} onclick="event.stopPropagation(); toggleModule('${mod.id}')">` +
+      `<div class="mod-info"><div class="mod-name">${mod.name}</div><div class="mod-desc">${mod.description}</div></div>` +
+      `<span class="mod-cat">${mod.category}</span>`;
     grid.appendChild(div);
   });
   document.getElementById('statSelected').textContent = selectedModules.size;
 }
 
 function toggleModule(id) {
-  if (selectedModules.has(id)) selectedModules.delete(id);
-  else selectedModules.add(id);
+  selectedModules.has(id) ? selectedModules.delete(id) : selectedModules.add(id);
   renderModules();
 }
+function selectAll() { modules.filter(m => m.id !== 'clean_all').forEach(m => selectedModules.add(m.id)); renderModules(); }
+function deselectAll() { selectedModules.clear(); renderModules(); }
 
-function selectAll() {
-  modules.forEach(m => selectedModules.add(m.id));
-  renderModules();
-}
-
-function deselectAll() {
-  selectedModules.clear();
-  renderModules();
-}
-
-// ============================================
-// CLEANING
-// ============================================
 async function runClean() {
   if (!currentPort) { log('Engine not connected', 'error'); return; }
   if (selectedModules.size === 0) { log('No modules selected', 'error'); return; }
-
   log(`Starting clean: ${selectedModules.size} modules...`, 'info');
   try {
     const res = await fetch(`http://localhost:${currentPort}/api/clean`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ modules: Array.from(selectedModules), key: licenseKey })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ modules: Array.from(selectedModules), sid: sidKey })
     });
     const data = await res.json();
     if (data.results) {
-      data.results.forEach(r => {
-        log(`${r.module}: ${r.status} — ${r.message}`, r.status === 'success' ? 'success' : 'error');
-      });
+      data.results.forEach(r => log(`${r.module}: ${r.status} — ${r.message}`, r.status === 'success' ? 'success' : 'error'));
       log(`Done: ${data.success}/${data.total} succeeded`, 'info');
-    } else if (data.error) {
-      log(data.error, 'error');
-    }
-  } catch (e) {
-    log('Clean failed: ' + e.message, 'error');
-  }
+    } else if (data.error) { log(data.error, 'error'); }
+  } catch (e) { log('Clean failed: ' + e.message, 'error'); }
 }
 
 async function runCleanAll() {
@@ -659,22 +507,17 @@ async function runCleanAll() {
   log('Starting System Optimization (ALL modules)...', 'info');
   try {
     const res = await fetch(`http://localhost:${currentPort}/api/clean`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ modules: ['clean_all'], key: licenseKey })
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ modules: ['clean_all'], sid: sidKey })
     });
     const data = await res.json();
-    if (data.results && data.results[0]) {
-      log(`System Optimization: ${data.results[0].status} — ${data.results[0].message}`, 'info');
+    if (data.results) {
+      data.results.forEach(r => log(`${r.module}: ${r.status} — ${r.message}`, r.status === 'success' ? 'success' : 'error'));
+      log(`System Optimization complete: ${data.success}/${data.total} succeeded`, 'info');
     }
-  } catch (e) {
-    log('System Optimization failed: ' + e.message, 'error');
-  }
+  } catch (e) { log('System Optimization failed: ' + e.message, 'error'); }
 }
 
-// ============================================
-// LOGGING
-// ============================================
 function log(msg, type) {
   const box = document.getElementById('logBox');
   const time = new Date().toLocaleTimeString();
@@ -685,12 +528,8 @@ function log(msg, type) {
   box.scrollTop = box.scrollHeight;
 }
 
-// ============================================
-// UTILS
-// ============================================
 function copyCommand() {
-  const cmd = document.getElementById('cmdText').textContent;
-  navigator.clipboard.writeText(cmd).then(() => {
+  navigator.clipboard.writeText(document.getElementById('cmdText').textContent).then(() => {
     const btn = document.querySelector('.copy-btn');
     btn.textContent = 'Copied!';
     setTimeout(() => btn.textContent = 'Copy', 1500);
@@ -698,47 +537,29 @@ function copyCommand() {
 }
 
 function downloadPS1() {
-  const key = licenseKey || '';
-  const content = `# xXx Cleaner Ultimate - Auto-generated starter
-# License: ${key}
-# Download the full script from your source
-
-Write-Host "xXx Cleaner Ultimate" -ForegroundColor Magenta
-Write-Host "License: ${key}" -ForegroundColor Cyan
-Write-Host "Download the full xXxCleanerUltimate.ps1 and run:" -ForegroundColor Yellow
-Write-Host 'powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -LicenseKey "${key}"' -ForegroundColor Gray
+  const key = sidKey || '';
+  const content = `# xXx Cleaner Ultimate v3.0 - Starter
+# System ID: ${key}
+# Run: powershell -ExecutionPolicy Bypass -File xXxCleanerUltimate.ps1 -SID "${key}"
+Write-Host "xXx Cleaner Ultimate v3.0" -ForegroundColor Magenta
+Write-Host "System ID: ${key}" -ForegroundColor Cyan
+Write-Host "Download the full xXxCleanerUltimate.ps1 and run with your SID" -ForegroundColor Yellow
 Read-Host "Press Enter to exit"
 `;
   const blob = new Blob([content], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = 'start_xXxCleaner.bat';
-  a.click();
+  a.href = url; a.download = 'start_xXxCleaner.bat'; a.click();
   URL.revokeObjectURL(url);
 }
 
-// ============================================
-// INIT
-// ============================================
 window.onload = () => {
-  // If license in storage, pre-fill
-  if (licenseKey) {
-    document.getElementById('licenseKey').value = licenseKey;
-  }
-
-  // Auto-check engine on load (in case it's already running)
+  if (sidKey) document.getElementById('sidInput').value = sidKey;
   checkEngine().then(() => {
-    if (engineOnline) {
-      loadModules();
-    }
+    if (engineOnline) loadModules();
   });
-
-  // Auto-poll engine every 5 seconds on engine screen
   setInterval(() => {
-    if (!engineOnline && document.getElementById('screen-engine').classList.contains('active')) {
-      checkEngine();
-    }
+    if (!engineOnline && document.getElementById('screen-engine').classList.contains('active')) checkEngine();
   }, 5000);
 };
 </script>
